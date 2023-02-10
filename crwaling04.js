@@ -13,8 +13,9 @@ async function main () {        // 비동기 I/O 지원 함수 정의
     const params = {
         'serviceKey':'CCjWE3KHmoW3oJhjbFufhSELDDm/9OSuQlW+ql/u8LA+IBXh3pG9PuG5+14ElD581dEaVkxVhbV0/IAK9fsfpQ==',
         'returnType':'json',
-        'sidoName':'전국',
-        'numOfRows':1000
+        'sidoName':'서울',
+        'numOfRows':500,
+        'ver':1.3
     };
     const headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78'}
 
@@ -32,9 +33,42 @@ async function main () {        // 비동기 I/O 지원 함수 정의
     // console.log(items)
 
     // 미세먼지 정보 출력
-    // pm25Value는 출력 안됨!!
+    // pm25Value 는 ver 1.3부터 출력된다.
     for(let item of items) {
-        console.log(item.sidoName,item.stationName,item.pm10Value,item.pm25Grade,item.dataTime);
+        let pm10g = Number(item.pm10Grade);
+        let pm25g = Number(item.pm25Grade);
+        switch (pm10g >0) {
+            case 1:
+                pm10g = '😍'
+                break;
+            case 2:
+                pm10g = '😐'
+                break;
+            case 3:
+                pm10g = '😥';
+                break;
+            case 4:
+                pm10g = '😱';
+                break;
+        }
+        switch (pm25g>0) {
+            case 1:
+                pm10g = '😍'
+                break;
+            case 2:
+                pm10g = '😐'
+                break;
+            case 3:
+                pm10g = '😥';
+                break;
+            case 4:
+                pm10g = '😱';
+                break;
+        }
+        console.log(item.sidoName,item.stationName,item.pm10Value,pm10g,item.pm25Value,pm25g,item.dataTime);
     }
+    // pmGrade(item.pm10Grade)
+    // 등급별 이모지
+    // 😍😐😥😱
 }
 main();
