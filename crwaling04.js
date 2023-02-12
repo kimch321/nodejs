@@ -11,17 +11,17 @@ async function main () {        // 비동기 I/O 지원 함수 정의
 // 접속할 url 지정, 쿼리스트링, user-agent 헤더 지정
     const URL = 'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty';
     const params = {
-        'serviceKey':'CCjWE3KHmoW3oJhjbFufhSELDDm/9OSuQlW+ql/u8LA+IBXh3pG9PuG5+14ElD581dEaVkxVhbV0/IAK9fsfpQ==',
-        'returnType':'json',
-        'sidoName':'서울',
-        'numOfRows':500,
-        'ver':1.3
+        'serviceKey': 'CCjWE3KHmoW3oJhjbFufhSELDDm/9OSuQlW+ql/u8LA+IBXh3pG9PuG5+14ElD581dEaVkxVhbV0/IAK9fsfpQ==',
+        'returnType': 'json',
+        'sidoName': '서울',
+        'numOfRows': 500,
+        'ver': 1.3
     };
-    const headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78'}
+    const headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78'}
 
     // axios로 접속해서 대기오염정보를 받아옴
     const json = await axios.get(URL, {
-        params : params,
+        params: params,
         headers: headers
     }); // 서버 요청시 User-Agent 헤더 사용
 
@@ -30,43 +30,30 @@ async function main () {        // 비동기 I/O 지원 함수 정의
 
     // JSON으로 불러오기
     let items = json.data['response']['body']['items']
-    // console.log(items)
+    //console.log(items)
+    // console.log(items[5].pm10Grade);
 
     // 미세먼지 정보 출력
-    // pm25Value 는 ver 1.3부터 출력된다.
-    for(let item of items) {
-        let pm10g = Number(item.pm10Grade);
-        let pm25g = Number(item.pm25Grade);
-        switch (pm10g >0) {
+    // // pm25Value 는 ver 1.3부터 출력된다.
+     function pmGrade(grade) {
+        const num = Number(grade)
+        switch(num) {
             case 1:
-                pm10g = '😍'
-                break;
+              return '😍'
             case 2:
-                pm10g = '😐'
-                break;
+              return '😍'
             case 3:
-                pm10g = '😥';
-                break;
+              return '😍'
             case 4:
-                pm10g = '😱';
-                break;
+              return '😍'
+            default:
+              return '뭔가 잘못되었음'
         }
-        switch (pm25g>0) {
-            case 1:
-                pm10g = '😍'
-                break;
-            case 2:
-                pm10g = '😐'
-                break;
-            case 3:
-                pm10g = '😥';
-                break;
-            case 4:
-                pm10g = '😱';
-                break;
-        }
-        console.log(item.sidoName,item.stationName,item.pm10Value,pm10g,item.pm25Value,pm25g,item.dataTime);
-    }
+     }
+
+     for(let item of items) {
+        console.log(item.sidoName,item.stationName,item.pm10Value,pmGrade(item.pm10Grade),item.pm25Value,pmGrade(item.pm25Grade),item.dataTime);
+     }
     // pmGrade(item.pm10Grade)
     // 등급별 이모지
     // 😍😐😥😱
