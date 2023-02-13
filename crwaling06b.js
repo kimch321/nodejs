@@ -14,7 +14,6 @@ async function main () {    // 비동기 I/O 지원 함수 정의
     const URL = 'https://movie.daum.net/main';
 
     let titles = [], grades = [], rsrates = []
-    let movie = [];
 
     // 크롬 자동화 브라우저 객체 생성
     const chrome = await new Builder().forBrowser(Browser.CHROME)
@@ -27,16 +26,6 @@ async function main () {    // 비동기 I/O 지원 함수 정의
 
         // 특정 요소가 화면에 위치할 때 까지 최대 5초간 기다려 줌
         await chrome.wait(until.elementLocated(By.css('.tit_item')), 5000);
-
-        // 접속한 사이트의 html 소스를 가져옴
-        const html = await chrome.getPageSource();
-        // console.log(html);
-
-        // 5초 정도 잠시 대기
-        // await chrome.sleep(5000);
-
-        // 페이지소스를 dom객체로 변환
-        // const dom = cheerio.load(html);
 
         // 제목들 추출
         let movies = await chrome.findElements(By.css('.feature_home .tit_item'));
@@ -72,15 +61,6 @@ async function main () {    // 비동기 I/O 지원 함수 정의
         for (let i = 0; i <titles.length; i++) {
             console.log(`${titles[i]}, 평점: ${grades[i]}, 예매율: ${rsrates[i]}`)
         }
-
-
-        // let movie = {}
-        // movie.title = titles[0];
-        // movie.grade = grades[0];
-        // let movie1 = {}
-        // movie1.title = titles[1];
-        // movie1.grade = grades[1];
-        // console.log(movie, movie1);
 
     } catch(ex) {
         console.log(ex);
