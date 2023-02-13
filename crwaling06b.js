@@ -2,10 +2,10 @@
 // 순위, 영화제목, 예약율, 평점
 
 // 사용할 패키지 가져오기 : require(패키지명)
-const axios = require('axios');
-const cheerio = require('cheerio');
-const fs = require('fs');       // 파일시스템 활성화
-const path = require('path');   // 파일경로 관련 라이브러리
+// const axios = require('axios');
+// const cheerio = require('cheerio');
+// const fs = require('fs');       // 파일시스템 활성화
+// const path = require('path');   // 파일경로 관련 라이브러리
 const {Builder, Browser, By, key, until} = require('selenium-webdriver');
 
 async function main () {    // 비동기 I/O 지원 함수 정의
@@ -36,36 +36,38 @@ async function main () {    // 비동기 I/O 지원 함수 정의
         // await chrome.sleep(5000);
 
         // 페이지소스를 dom객체로 변환
-        const dom = cheerio.load(html);
+        // const dom = cheerio.load(html);
 
         // 제목들 추출
-        let movies = dom('.feature_home .tit_item');
+        let movies = await chrome.findElements(By.css('.feature_home .tit_item'));
         //console.log(mails)
 
-        // 추출된 제목 배열에 담기
-        movies.each((idx, movie) => {
-             titles.push(dom(movie).text().trim())
-         });
-        // console.log(titles);
+        // 추출된 제목 출력
+        for (let movie of movies) {
+        //    console.log(await movie.getText()); 눈에 보이는 요소의 텍스트만 출력
+            let title  = (await movie.getAttribute('textContent')).trim()
+            titles.push(title);
+        }
+       // console.log(titles);
 
         // 평점 추출
-        movies = dom('.feature_home .txt_num:first-child');
+        movies = await chrome.findElements(By.css('.feature_home .txt_num:first-child'));
         //console.log(movies);
 
         // 평점 배열에 담기
-        movies.each((idx, movie) => {
-            grades.push(dom(movie).text().trim())
-        });
-        // console.log(grades.length)
+        for (let movie of movies) {
+            let grade  = (await movie.getAttribute('textContent')).trim()
+            grades.push(grade);
+        }
 
         // 예매율 추출
-        movies = dom('.feature_home .txt_num:last-child');
+         movies = await chrome.findElements(By.css('.feature_home .txt_num:last-child'));
 
         // 예매율 배열에 담기
-        movies.each((idx, movie) => {
-            rsrates.push(dom(movie).text().trim())
-        });
-        // console.log(rsrates.length)
+        for (let movie of movies) {
+            let rsrate  = (await movie.getAttribute('textContent')).trim()
+            rsrates.push(rsrate);
+        }
 
         for (let i = 0; i <titles.length; i++) {
             console.log(`${titles[i]}, 평점: ${grades[i]}, 예매율: ${rsrates[i]}`)
