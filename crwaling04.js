@@ -37,18 +37,20 @@ async function main () {        // 비동기 I/O 지원 함수 정의
     // // pm25Value 는 ver 1.3부터 출력된다.
      function pmGrade(grade) {
         const num = Number(grade)
-        switch(num) {
-            case 1:
-              return '😍'
-            case 2:
-              return '😍'
-            case 3:
-              return '😍'
-            case 4:
-              return '😍'
-            default:
-              return '뭔가 잘못되었음'
-        }
+        // switch(num) {
+        //     case 1:
+        //       return '😍'
+        //     case 2:
+        //       return '😐'
+        //     case 3:
+        //       return '😥'
+        //     case 4:
+        //       return '😱'
+        //     default:
+        //       return grade
+        // }
+         let emojis = ['😍','😐','😥','😱']
+         return emojis[num-1]
      }
 
      for(let item of items) {
