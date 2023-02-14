@@ -26,11 +26,12 @@ async function main() {
 
         // sql문을 실행하고 결과를 받아옴
         let result = await conn.execute(sql, params, options);
-        console.log(result instanceof Promise);
+        // console.log(result);
 
 
         // 실행결과를 결과집합 변환
         let rs = result.resultSet;
+        // console.log(rs);
 
         // 결과집합 객체의 각 요소를 순회하면서 내용 출력
         while((row = await rs.getRow())) {  // outFormat 설정 필요!
